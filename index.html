@@ -98,6 +98,11 @@
   h1.hero-title{
     margin-top:22px; font-size:clamp(36px,4.6vw,58px); line-height:1.08; color:var(--navy);
   }
+  .hero-copy > *{animation:hero-enter .7s cubic-bezier(.22,1,.36,1) both;}
+  .hero-copy .hero-title{animation-delay:.1s;}
+  .hero-copy .hero-sub{animation-delay:.22s;}
+  .hero-copy .hero-actions{animation-delay:.34s;}
+  @keyframes hero-enter{from{opacity:0;transform:translateY(22px);filter:blur(5px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
   .hero-sub{margin-top:20px; font-size:17px; color:var(--muted); max-width:48ch;}
   .hero-actions{display:flex; gap:16px; margin-top:34px; flex-wrap:wrap;}
   .btn-primary{
@@ -142,6 +147,8 @@
   .media-placeholder .ph-label{font-size:14px; font-weight:700; color:var(--navy);}
   .media-placeholder .ph-hint{font-family:var(--mono); font-size:11px; color:var(--muted); max-width:22ch;}
   .media-placeholder.square{aspect-ratio:1/1;}
+  .about-video-frame{width:100%;margin:0 auto;border-radius:24px;overflow:hidden;background:#080919;box-shadow:0 36px 76px -28px rgba(15,17,48,.52);border:7px solid #fff;}
+  .about-video{width:100%;height:clamp(360px,38vw,460px);object-fit:cover;display:block;background:var(--bg-soft-2);}
 
   .float-card{
     position:absolute; background:#fff; border-radius:14px; padding:10px 14px; z-index:3;
@@ -195,11 +202,19 @@
   /* Stats band */
   .stats-band{background:var(--navy); padding:88px 0; position:relative; overflow:hidden;}
   .stats-band .orb{opacity:0.8;}
-  .stats-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:32px; position:relative; z-index:2;}
-  .stat{border-left:1px solid rgba(255,255,255,0.14); padding-left:20px;}
-  .stat b{font-family:var(--display); font-size:clamp(30px,3.4vw,44px); display:block; color:#fff; font-weight:700;}
-  .stat b.g{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;}
-  .stat span{font-family:var(--mono); font-size:12px; color:rgba(255,255,255,0.55); text-transform:uppercase; letter-spacing:0.04em; display:block; margin-top:8px;}
+  .trust-banner{position:relative; z-index:2; max-width:760px; text-align:center; margin:0 auto;}
+  .trust-banner .eyebrow{color:rgba(255,255,255,0.65);}
+  .trust-banner h2{color:#fff;}
+  .trust-banner p{margin-top:14px; font-size:16px; color:rgba(255,255,255,0.72);}
+  .trust-logos{display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin-top:28px;}
+  .trust-logo{
+    min-width:150px; height:74px; padding:14px 18px; border-radius:18px; background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.14); display:flex; align-items:center; justify-content:center;
+    color:#fff; box-shadow:0 18px 36px -24px rgba(0,0,0,0.55);
+  }
+  .trust-logo img{max-width:118px; max-height:40px; object-fit:contain;}
+  .trust-logo .logo-label{font-family:var(--display); font-size:14px; font-weight:600; letter-spacing:-0.01em; opacity:0.92;}
+  .trust-logo.muted{color:rgba(255,255,255,0.8); background:rgba(255,255,255,0.05);}
 
   /* CTA band */
   .cta-band{
@@ -220,30 +235,103 @@
   .cta-band .btn-white:hover{transform:translateY(-2px);}
 
   /* About / why choose */
-  .about-section{background:var(--bg-soft);}
-  .about-grid{display:grid; grid-template-columns:0.85fr 1.15fr; gap:64px; align-items:center;}
-  .about-visual{position:relative;}
-  .about-badge{
-    position:absolute; bottom:-18px; left:-18px; background:#fff; border-radius:16px; padding:16px 20px;
-    box-shadow:0 20px 40px -18px rgba(15,17,48,0.3); display:flex; align-items:center; gap:12px;
+  .about-section{
+    background:linear-gradient(180deg, #F5F6FC 0%, #FFFFFF 100%);
+    position:relative;
+    overflow:hidden;
   }
-  .about-badge .big{font-family:var(--display); font-size:26px; font-weight:700;}
-  .about-badge .lbl{font-size:11px; color:var(--muted); font-family:var(--mono); text-transform:uppercase;}
-  .checklist{margin-top:28px; display:flex; flex-direction:column; gap:16px;}
-  .checklist li{display:flex; gap:14px; align-items:flex-start; list-style:none;}
+  .about-section::before{
+    content:'';
+    position:absolute;
+    inset:-120px auto auto -140px;
+    width:320px;
+    height:320px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(10,124,245,0.10), transparent 70%);
+    pointer-events:none;
+  }
+  .about-section::after{
+    content:'';
+    position:absolute;
+    inset:auto -100px -120px auto;
+    width:280px;
+    height:280px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(214,18,127,0.08), transparent 70%);
+    pointer-events:none;
+  }
+  .about-grid{display:block; position:relative; z-index:1;}
+  .about-visual{position:relative; padding-top:12px;}
+  .about-visual::before{
+    content:'';
+    position:absolute;
+    inset:18px -16px -18px 18px;
+    border-radius:30px;
+    background:linear-gradient(135deg, rgba(10,124,245,0.10), rgba(214,18,127,0.08));
+    filter:blur(0.2px);
+    z-index:0;
+  }
+  .about-visual > *{position:relative; z-index:1;}
+  #pourquoi-digiwearit{
+    scroll-margin-top:110px;
+    position:absolute;
+    right:26px;
+    top:50%;
+    transform:translateY(-50%);
+    width:min(420px, calc(100% - 52px));
+    z-index:3;
+    background:rgba(255,255,255,0.92);
+    border:1px solid rgba(231,232,244,0.95);
+    border-radius:30px;
+    padding:36px 34px 30px;
+    box-shadow:0 30px 70px -38px rgba(15,17,48,0.24);
+    backdrop-filter:blur(8px);
+  }
+  #pourquoi-digiwearit::before{
+    content:'';
+    display:block;
+    width:68px;
+    height:4px;
+    border-radius:999px;
+    background:var(--grad);
+    margin-bottom:18px;
+  }
+  #pourquoi-digiwearit .eyebrow{margin-bottom:10px;}
+  #pourquoi-digiwearit h2{margin-bottom:10px; line-height:1.04; max-width:15ch;}
+  #pourquoi-digiwearit > p{max-width:none !important;}
+  .checklist{margin-top:20px; display:flex; flex-direction:column; gap:10px;}
+  .checklist li{
+    display:flex; gap:12px; align-items:flex-start; list-style:none;
+    padding:14px 14px; border-radius:18px; border:1px solid #ECEEFA;
+    background:linear-gradient(180deg, #FFFFFF 0%, #FAFBFF 100%);
+    box-shadow:0 10px 24px -20px rgba(15,17,48,0.18);
+  }
   .check-ic{
-    width:26px; height:26px; border-radius:8px; background:var(--grad); flex-shrink:0;
-    display:flex; align-items:center; justify-content:center; margin-top:2px;
+    width:30px; height:30px; border-radius:10px; background:var(--grad); flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; margin-top:1px;
   }
-  .checklist strong{display:block; color:var(--navy); font-size:15px; margin-bottom:2px;}
-  .checklist span{font-size:13.5px; color:var(--muted);}
+  .about-grid > div:last-child > p{font-size:14px !important; line-height:1.6;}
+  .checklist strong{display:block; color:var(--navy); font-size:14.5px; margin-bottom:2px;}
+  .checklist span{font-size:12.8px; color:var(--muted); line-height:1.55;}
   .contact-chip{
-    margin-top:32px; display:flex; align-items:center; gap:16px; background:#fff; border:1px solid var(--line);
-    border-radius:16px; padding:18px 22px; max-width:400px;
+    margin-top:24px; display:flex; align-items:center; gap:14px; background:var(--navy); border:1px solid transparent;
+    border-radius:18px; padding:16px 20px; max-width:400px; box-shadow:0 18px 36px -24px rgba(15,17,48,0.55);
   }
   .contact-chip .ic{width:44px; height:44px; border-radius:50%; background:var(--grad); flex-shrink:0; display:flex; align-items:center; justify-content:center;}
-  .contact-chip .k{font-size:11px; color:var(--muted); font-family:var(--mono); text-transform:uppercase;}
-  .contact-chip .v{font-size:15px; font-weight:700; color:var(--navy);}
+  .contact-chip .k{font-size:11px; color:rgba(255,255,255,0.55); font-family:var(--mono); text-transform:uppercase;}
+  .contact-chip .v{font-size:15px; font-weight:700; color:#fff;}
+  .contact-chip .v a{color:#fff;}
+  .contact-chip:hover{transform:translateY(-1px);}
+  .about-video-frame{width:min(100%, 1040px); margin:0 auto; border-radius:34px; overflow:hidden; background:#080919; box-shadow:0 36px 76px -28px rgba(15,17,48,.52); border:7px solid #fff;}
+  .about-video{width:100%; height:min(72vh, 720px); object-fit:cover; display:block; background:var(--bg-soft-2);}
+  .about-visual::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(90deg, rgba(245,246,252,0.18) 0%, rgba(245,246,252,0.0) 46%, rgba(245,246,252,0.18) 100%);
+    pointer-events:none;
+    z-index:1;
+  }
 
   /* Mission vision valeurs */
   .mvv{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
@@ -275,6 +363,21 @@
   .cat-card p{font-size:14px; color:var(--muted); margin-bottom:18px;}
   .cat-link{font-size:13px; font-weight:700; color:var(--violet); display:inline-flex; gap:6px; align-items:center;}
 
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .price-card{border:1px solid var(--line);border-radius:var(--r);padding:32px;background:#fff;transition:transform .25s ease,box-shadow .25s ease;}
+  .price-card:hover{transform:translateY(-7px);box-shadow:0 24px 50px -24px rgba(15,17,48,.3);}
+  .price-card.featured{background:var(--navy);border-color:var(--navy);box-shadow:0 24px 50px -24px rgba(15,17,48,.5);}
+  .price-card h3{font-size:22px;}.price-card.featured h3{color:#fff;}
+  .price-card p{font-size:14px;color:var(--muted);margin:10px 0 20px;}.price-card.featured p{color:rgba(255,255,255,.68);}
+  .price{font-family:var(--display);font-size:28px;color:var(--navy);font-weight:700;margin-bottom:22px;}.price-card.featured .price{color:#fff;}
+  .price-list{display:grid;gap:10px;margin-bottom:28px;}.price-list li{font-size:13px;color:var(--text);}.price-list li::before{content:'✓';color:var(--violet);font-weight:700;margin-right:8px;}.price-card.featured .price-list li{color:rgba(255,255,255,.8);}.price-card.featured .price-list li::before{color:#fff;}
+  .price-card .btn-ghost{display:block;text-align:center;}.price-card.featured .btn-ghost{background:#fff;color:var(--violet);}
+  .pricing-note{text-align:center;color:var(--muted);font-size:14px;margin:26px 0 34px;}
+  .pricing-compare{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:#fff;margin-top:42px;}
+  .pricing-compare th,.pricing-compare td{padding:15px 18px;border-bottom:1px solid var(--line);text-align:center;font-size:13.5px;}
+  .pricing-compare th{font-family:var(--display);font-size:15px;color:var(--navy);background:var(--bg-soft);}.pricing-compare th:first-child,.pricing-compare td:first-child{text-align:left;font-weight:600;}
+  .pricing-compare tr:last-child td{border-bottom:0;}.included{color:var(--violet);font-weight:700;}.not-included{color:#b7b9c9;}
+
   .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:36px; margin-top:80px; counter-reset:step;}
   .step{position:relative; padding-left:54px;}
   .step::before{
@@ -285,6 +388,38 @@
   }
   .step h4{font-size:17px; margin-bottom:8px;}
   .step p{font-size:13.5px; color:var(--muted);}
+
+  /* FAQ + Trust */
+  .faq-section{background:#fff;}
+  .faq-layout{display:grid; grid-template-columns:1fr 0.95fr; gap:28px; align-items:start;}
+  .faq-list{display:flex; flex-direction:column; gap:14px;}
+  .faq-item{
+    border:1px solid var(--line); border-radius:18px; background:var(--bg-soft); overflow:hidden;
+    box-shadow:0 18px 36px -30px rgba(15,17,48,0.18);
+  }
+  .faq-item summary{
+    list-style:none; cursor:pointer; padding:20px 22px; display:flex; align-items:center; justify-content:space-between;
+    gap:18px; font-family:var(--display); font-size:17px; color:var(--navy); font-weight:600;
+  }
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{content:'+'; font-family:var(--mono); color:var(--violet); font-size:22px; line-height:1;}
+  .faq-item[open] summary::after{content:'−';}
+  .faq-item p{padding:0 22px 20px; color:var(--muted); font-size:14px; line-height:1.6;}
+  .trust-panel{
+    background:var(--navy); color:#fff; border-radius:24px; padding:30px; position:sticky; top:104px;
+    box-shadow:0 28px 60px -34px rgba(15,17,48,0.5);
+  }
+  .trust-panel .eyebrow{color:rgba(255,255,255,0.65);}
+  .trust-panel h3{font-size:26px; margin-bottom:10px; color:#fff;}
+  .trust-panel > p{color:rgba(255,255,255,0.74); font-size:14.5px; line-height:1.6; margin-bottom:22px;}
+  .trust-features{display:grid; gap:14px;}
+  .trust-feature{
+    display:flex; gap:14px; align-items:flex-start; padding:16px 0; border-top:1px solid rgba(255,255,255,0.12);
+  }
+  .trust-feature:first-child{border-top:none; padding-top:0;}
+  .trust-feature .ic{width:40px; height:40px; border-radius:12px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .trust-feature h4{font-size:15px; color:#fff; margin-bottom:4px;}
+  .trust-feature p{font-size:13px; color:rgba(255,255,255,0.72); line-height:1.5;}
 
   /* Testimonials */
   .testis{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
@@ -472,6 +607,8 @@
     .mvv{grid-template-columns:1fr;}
     .valeurs-list{grid-template-columns:1fr 1fr;}
     .cats{grid-template-columns:1fr;}
+    .pricing-grid{grid-template-columns:1fr;}
+    .pricing-compare{display:block;overflow-x:auto;white-space:nowrap;}
     .steps{grid-template-columns:1fr;}
     .testis{grid-template-columns:1fr;}
     .contact-grid{grid-template-columns:1fr;}
@@ -480,6 +617,20 @@
     .quiz-box{padding:26px;}
     .topbar-left{display:none;}
     .stats-grid{grid-template-columns:1fr 1fr;}
+    .faq-layout{grid-template-columns:1fr;}
+    .trust-panel{position:relative; top:auto;}
+    .about-visual::before,
+    .about-visual::after{display:none;}
+    #pourquoi-digiwearit{
+      position:relative;
+      right:auto;
+      top:auto;
+      transform:none;
+      width:100%;
+      margin-top:18px;
+    }
+    .about-video-frame{width:100%;}
+    .about-video{height:clamp(280px,54vw,420px);}
     .cta-band{padding:44px 28px; flex-direction:column; text-align:center; align-items:flex-start;}
     .marquee-track span{font-size:16px; padding:0 18px;}
   }
@@ -493,13 +644,14 @@
   <nav class="wrap">
     <a href="#top" class="brand">
       <img src="data:image/jpeg;base64,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" alt="Digiwearit">
-      <span>digiwearit</span>
+      <span>DIGIwearit</span>
     </a>
     <div class="navlinks">
-      <a href="#mission">Mission</a>
-      <a href="#categories">Catégories</a>
+      <a href="#pourquoi-digiwearit">Pourquoi Digiwearit</a>
+      <a href="#services">Services</a>
       <a href="#temoignages">Témoignages</a>
-      <a href="#quiz">Quiz</a>
+      <a href="#pricing">Tarifs</a>
+      <a href="#quiz">Quiz B2B</a>
       <a href="#contact" class="nav-cta">Demander une démo</a>
     </div>
     <label for="navToggle" class="burger" aria-label="Ouvrir le menu"><span></span><span></span><span></span></label>
@@ -512,13 +664,13 @@
   <section class="hero">
     <div class="hex-field"></div>
     <div class="wrap hero-grid">
-      <div>
-        <div class="pill"><span class="dot"></span> Première AR-tech d'essayage en Afrique</div>
-        <h1 class="hero-title">Essayez avant<br>d'acheter, <span class="grad-text">en un scan.</span></h1>
-        <p class="hero-sub">Digiwearit transforme une simple photo 2D en modèle 3D essayable en réalité augmentée — vêtements traditionnels, lunettes et maquillage.</p>
+      <div class="hero-copy">
+        <div class="pill"><span class="dot"></span> L'essayage AR pour le retail africain</div>
+        <h1 class="hero-title">Vendez plus.<br><span class="grad-text">Faites-les essayer avant d'acheter.</span></h1>
+        <p class="hero-sub">Digiwearit transforme vos fiches produits en <strong>expériences immersives 3D &amp; Réalité Augmentée</strong> qui inspirent confiance, boostent vos conversions et réduisent drastiquement les retours.</p>
         <div class="hero-actions">
-          <a href="#quiz" class="btn-primary">Faire le quiz de style</a>
-          <a href="#contact" class="btn-ghost">Devenir partenaire</a>
+          <a href="#contact" class="btn-primary">Planifier une démo</a>
+          <a href="#quiz" class="btn-ghost">Évaluer mon besoin</a>
         </div>
       </div>
 
@@ -543,23 +695,23 @@
       <div class="highlights-grid">
         <div class="highlight">
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#7B3FE0" stroke-width="1.6"><path d="M4 8 L12 4 L20 8 L20 16 L12 20 L4 16 Z"/><path d="M4 8 L12 12 L20 8"/><path d="M12 12 L12 20"/></svg></div>
-          <h4>Essayage AR</h4>
-          <p>Depuis un simple smartphone, sans application dédiée.</p>
+          <h4>Essayage AR sur Smartphone</h4>
+          <p>Essayage en réalité augmentée instantané, sans téléchargement d’application.</p>
         </div>
         <div class="highlight">
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#0A7CF5" stroke-width="1.6"><path d="M4 6 h16 M4 12 h16 M4 18 h10"/></svg></div>
-          <h4>Génération 3D</h4>
-          <p>Une photo 2D suffit, aucune compétence technique requise.</p>
+          <h4>Génération 3D en Secondes</h4>
+          <p>Une seule photo 2D suffit pour créer un modèle 3D réaliste.</p>
         </div>
         <div class="highlight">
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#D6127F" stroke-width="1.6"><path d="M12 3 L21 8 L21 16 L12 21 L3 16 L3 8 Z"/></svg></div>
-          <h4>Moins de retours</h4>
-          <p>Le client sait exactement ce qu'il va recevoir.</p>
+          <h4>Visualisation Fidèle</h4>
+          <p>Présentez vos produits avec un rendu précis sous tous les angles.</p>
         </div>
         <div class="highlight">
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#7B3FE0" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><path d="M12 8 v4 l3 2"/></svg></div>
-          <h4>Intégration rapide</h4>
-          <p>Déployée sur votre boutique en ligne en quelques jours.</p>
+          <h4>Déploiement Express</h4>
+          <p>Intégrez la solution à votre site e-commerce en quelques jours seulement.</p>
         </div>
       </div>
     </div>
@@ -570,42 +722,39 @@
   <section class="about-section">
     <div class="wrap about-grid">
       <div class="about-visual" data-reveal>
-        <div class="media-placeholder square" data-placeholder="about">
-          <div class="ph-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#D6127F" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16 L15 10 L6 20"/></svg></div>
-          <span class="ph-label">Ajoutez votre image de démonstration</span>
-          <span class="ph-hint">Format carré conseillé</span>
-        </div>
-        <div class="about-badge">
-          <div class="big grad-text">2D→3D</div>
-          <div class="lbl">Génération<br>automatique</div>
+        <div class="about-video-frame">
+          <video class="about-video" id="demoVideo" controls playsinline aria-label="Démonstration Digiwearit">
+            <source src="vid.mp4" type="video/mp4">
+            Votre navigateur ne prend pas en charge la vidéo.
+          </video>
         </div>
       </div>
 
-      <div data-reveal>
+      <div data-reveal id="pourquoi-digiwearit">
         <div class="eyebrow">Pourquoi Digiwearit</div>
-        <h2>Le meilleur partenaire pour vendre en confiance</h2>
-        <p style="margin-top:14px; color:var(--muted); font-size:15.5px; max-width:52ch;">Nous donnons aux fournisseurs et revendeurs les moyens de recréer l'expérience boutique en ligne — sans studio 3D, sans matériel spécial.</p>
+        <h2>Votre partenaire AR pour booster vos ventes en toute confiance</h2>
+        <p style="margin-top:10px; color:var(--muted); font-size:15px; max-width:52ch; line-height:1.45;">Nous équipons les fournisseurs et revendeurs avec une technologie qui transforme l’expérience d’achat en ligne en véritable essayage virtuel — simple, rapide et sans infrastructure lourde.</p>
 
         <ul class="checklist">
           <li>
             <div class="check-ic"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="#fff" stroke-width="2"><path d="M3 8 L6.5 11.5 L13 4.5"/></svg></div>
-            <div><strong>Aucun matériel spécial requis</strong><span>Une photo 2D classique suffit pour générer le modèle 3D.</span></div>
+            <div><strong>Zéro matériel requis</strong><span>Une photo 2D classique suffit pour créer un modèle 3D de haute qualité.</span></div>
           </li>
           <li>
             <div class="check-ic"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="#fff" stroke-width="2"><path d="M3 8 L6.5 11.5 L13 4.5"/></svg></div>
-            <div><strong>Intégration rapide</strong><span>Ajouté à votre boutique en ligne existante en quelques jours.</span></div>
+            <div><strong>Déploiement express</strong><span>Intégrez la solution à votre site e-commerce en quelques jours seulement.</span></div>
           </li>
           <li>
             <div class="check-ic"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="#fff" stroke-width="2"><path d="M3 8 L6.5 11.5 L13 4.5"/></svg></div>
-            <div><strong>Pensé pour l'Afrique</strong><span>Conçu pour les réalités du commerce marocain et africain.</span></div>
+            <div><strong>Pensé localement</strong><span>Conçu spécifiquement pour le marché marocain et africain.</span></div>
           </li>
         </ul>
 
         <div class="contact-chip">
           <div class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2"><path d="M4 5 h16 v14 h-16 Z"/><path d="M4 6 L12 13 L20 6"/></svg></div>
           <div>
-            <div class="k">Une question</div>
-            <div class="v">hello@digiwearit.com</div>
+            <div class="k">Une question ?</div>
+            <div class="v"><a href="mailto:hello@digiwearit.com">hello@digiwearit.com</a></div>
           </div>
         </div>
       </div>
@@ -616,21 +765,27 @@
   <section class="stats-band">
     <div class="orb orb-1" style="top:-100px; left:10%;"></div>
     <div class="orb orb-2" style="bottom:-120px; right:8%;"></div>
-    <div class="wrap stats-grid" data-reveal>
-      <div class="stat"><b class="g">01</b><span>Déploiement facile</span></div>
-      <div class="stat"><b>2D→3D</b><span>Conversion automatique</span></div>
-      <div class="stat"><b class="g">3</b><span>Catégories disponibles</span></div>
-      <div class="stat"><b>48h</b><span>Réponse démo</span></div>
+    <div class="wrap trust-banner" data-reveal>
+      <div class="eyebrow">Qui nous fait confiance</div>
+      <h2>Des marques, revendeurs et fournisseurs qui avancent avec Digiwearit.</h2>
+      <p>Ils choisissent Digiwearit pour l'essayage AR, l'intégration rapide et une présentation produit plus convaincante.</p>
+      <div class="trust-logos" aria-label="Logos des marques partenaires">
+        <div class="trust-logo">
+          <img src="digiwearitcom_logo.jpg" alt="Digiwearit">
+        </div>
+        <div class="trust-logo muted"><span class="logo-label">Marque partenaire</span></div>
+        <div class="trust-logo muted"><span class="logo-label">Marque partenaire</span></div>
+        <div class="trust-logo muted"><span class="logo-label">Marque partenaire</span></div>
+      </div>
     </div>
   </section>
 
   <!-- MISSION VISION VALEURS -->
-  <section id="mission">
+  <section id="why-digiwearit">
     <div class="wrap">
       <div class="section-head" data-reveal>
-        <div class="eyebrow">Pourquoi nous existons</div>
-        <h2>Mission, vision &amp; valeurs</h2>
-        <p>Une conviction simple : essayer avant d'acheter ne devrait jamais être un frein, même en ligne.</p>
+        <h2>L'essayage qui transforme l'hésitation en décision.</h2>
+        <p>Une expérience produit immersive conçue pour aider vos équipes à convertir avec plus de confiance.</p>
       </div>
 
       <div class="mvv" data-reveal>
@@ -673,46 +828,46 @@
   </section>
 
   <!-- CATEGORIES -->
-  <section id="categories" class="cat-section">
+  <section id="services" class="cat-section">
     <div class="wrap">
       <div class="section-head" data-reveal>
-        <div class="eyebrow">Univers produits</div>
-        <h2>Trois catégories, un même essayage</h2>
-        <p>Chaque univers a ses propres contraintes de rendu — nous les avons résolues une par une.</p>
+        <div class="eyebrow">Nos services</div>
+        <h2>Des services pensés pour vendre plus.</h2>
+        <p>Nous aidons vos clients à se projeter, à essayer et à acheter avec confiance grâce à une expérience AR simple et convaincante.</p>
       </div>
       <div class="cats" data-reveal>
         <div class="cat-card">
-          <div class="media-placeholder photo-preview"><div style="width:100%;height:100%;background:linear-gradient(135deg,rgba(10,124,245,0.12),rgba(214,18,127,0.12));border-radius:12px;display:flex;align-items:center;justify-content:center;"><span style="font-size:13px;color:var(--muted);font-weight:600;">Photo mode</span></div></div>
+          <div class="media-placeholder photo-preview"><div style="width:100%;height:100%;background:linear-gradient(135deg,rgba(10,124,245,0.12),rgba(214,18,127,0.12));border-radius:12px;display:flex;align-items:center;justify-content:center;"><span style="font-size:13px;color:var(--muted);font-weight:600;">Essayage virtuel</span></div></div>
           <h3>Vêtements</h3>
-          <p>Essayez vêtements traditionnels et modernes avec détails de tissu précis et drapé réaliste en AR.</p>
+          <p>Permettez à vos clients de voir la tenue portée de façon réaliste avant de commander.</p>
           <a href="#quiz" class="cat-link">Voir le rendu →</a>
         </div>
         <div class="cat-card">
-          <div class="media-placeholder photo-preview"><div style="width:100%;height:100%;background:linear-gradient(135deg,rgba(10,124,245,0.12),rgba(214,18,127,0.12));border-radius:12px;display:flex;align-items:center;justify-content:center;"><span style="font-size:13px;color:var(--muted);font-weight:600;">Photo lunettes</span></div></div>
+          <div class="media-placeholder photo-preview"><div style="width:100%;height:100%;background:linear-gradient(135deg,rgba(10,124,245,0.12),rgba(214,18,127,0.12));border-radius:12px;display:flex;align-items:center;justify-content:center;"><span style="font-size:13px;color:var(--muted);font-weight:600;">Essayage visage</span></div></div>
           <h3>Lunettes</h3>
-          <p>Positionnement facial en temps réel pour un essayage précis, monture par monture.</p>
+          <p>Aidez chaque client à trouver la monture qui lui va le mieux, en quelques secondes.</p>
           <a href="#quiz" class="cat-link">Voir le rendu →</a>
         </div>
         <div class="cat-card">
-          <div class="media-placeholder photo-preview"><div style="width:100%;height:100%;background:linear-gradient(135deg,rgba(10,124,245,0.12),rgba(214,18,127,0.12));border-radius:12px;display:flex;align-items:center;justify-content:center;"><span style="font-size:13px;color:var(--muted);font-weight:600;">Photo maquillage</span></div></div>
+          <div class="media-placeholder photo-preview"><div style="width:100%;height:100%;background:linear-gradient(135deg,rgba(10,124,245,0.12),rgba(214,18,127,0.12));border-radius:12px;display:flex;align-items:center;justify-content:center;"><span style="font-size:13px;color:var(--muted);font-weight:600;">Rendu instantané</span></div></div>
           <h3>Maquillage</h3>
-          <p>Simulation de teintes et textures sur le visage du client, en direct, sans échantillon physique.</p>
+          <p>Faites découvrir les teintes en temps réel pour faciliter le choix et accélérer l'achat.</p>
           <a href="#quiz" class="cat-link">Voir le rendu →</a>
         </div>
       </div>
 
       <div class="steps" data-reveal>
         <div class="step">
-          <h4>Import de la photo</h4>
-          <p>Le fournisseur charge une simple image 2D du produit, sans matériel spécial.</p>
+          <h4>Découverte rapide</h4>
+          <p>Le client découvre votre produit dans une expérience claire, simple et rassurante.</p>
         </div>
         <div class="step">
-          <h4>Génération 3D automatique</h4>
-          <p>Notre moteur reconstruit le volume, la texture et les proportions du produit.</p>
+          <h4>Projection instantanée</h4>
+          <p>L'expérience s'adapte automatiquement pour montrer le rendu de manière convaincante.</p>
         </div>
         <div class="step">
-          <h4>Essayage en réalité augmentée</h4>
-          <p>Le client essaie le produit depuis son téléphone, en conditions réelles.</p>
+          <h4>Achat plus fluide</h4>
+          <p>Le client passe plus facilement de la découverte à la commande, sans hésitation.</p>
         </div>
       </div>
     </div>
@@ -722,7 +877,7 @@
   <section id="temoignages">
     <div class="wrap">
       <div class="section-head" data-reveal>
-        <div class="eyebrow">Ils utilisent Digiwearit</div>
+        <div class="eyebrow">Qui nous fait confiance</div>
         <h2>Témoignages</h2>
         <p>Fournisseurs, revendeurs et équipes marketing racontent l'impact sur leurs ventes.</p>
       </div>
@@ -770,13 +925,100 @@
     </div>
   </section>
 
+  <!-- FAQ -->
+  <section id="faq" class="faq-section">
+    <div class="wrap faq-layout">
+      <div>
+        <div class="section-head" data-reveal>
+          <div class="eyebrow">FAQ</div>
+          <h2>Des réponses claires avant de se lancer.</h2>
+          <p>Les questions les plus fréquentes sur le déploiement, la compatibilité et l’accompagnement.</p>
+        </div>
+        <div class="faq-list" data-reveal>
+          <details class="faq-item" open>
+            <summary>Combien de temps faut-il pour déployer Digiwearit ?</summary>
+            <p>La mise en place prend généralement quelques jours selon votre boutique, vos contenus et le niveau d’intégration souhaité.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Ai-je besoin d’un studio 3D ou d’un matériel spécifique ?</summary>
+            <p>Non. Une photo 2D suffit pour démarrer, et nous vous accompagnons pour préparer une expérience simple et efficace.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Est-ce adapté au marché marocain et africain ?</summary>
+            <p>Oui. L’expérience est pensée pour les réalités locales, avec une approche claire, rapide et accessible pour les équipes et les clients.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Puis-je commencer sur une petite sélection de produits ?</summary>
+            <p>Oui, vous pouvez tester sur une première sélection avant d’étendre progressivement la solution à davantage de produits ou de catégories.</p>
+          </details>
+        </div>
+      </div>
+
+      <aside class="trust-panel" data-reveal>
+        <div class="eyebrow">Trust & Sécurité</div>
+        <h3>Une expérience fiable, claire et sous contrôle.</h3>
+        <p>Nous mettons l’accent sur la confiance, la simplicité d’usage et le respect de vos contenus.</p>
+        <div class="trust-features">
+          <div class="trust-feature">
+            <div class="ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="1.8"><path d="M12 3 L20 7 V12 C20 17 16.5 20.5 12 22 C7.5 20.5 4 17 4 12 V7 Z"/><path d="M9 12 l2 2 l4 -5"/></svg></div>
+            <div>
+              <h4>Vos contenus restent à vous</h4>
+              <p>Vos visuels et vos produits sont utilisés dans un cadre maîtrisé, sans dilution de votre identité de marque.</p>
+            </div>
+          </div>
+          <div class="trust-feature">
+            <div class="ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 12 h16"/><path d="M12 4 v16"/><path d="M6 6 l12 12"/><path d="M18 6 l-12 12"/></svg></div>
+            <div>
+              <h4>Processus simple pour vos équipes</h4>
+              <p>Nous privilégions un parcours clair, sans complexité inutile, pour faciliter l’adoption côté commercial et marketing.</p>
+            </div>
+          </div>
+          <div class="trust-feature">
+            <div class="ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="1.8"><path d="M12 22s7-3.5 7-10V6l-7-3-7 3v6c0 6.5 7 10 7 10z"/><path d="M8 12 l2.5 2.5 L16 9"/></svg></div>
+            <div>
+              <h4>Confiance renforcée à l’achat</h4>
+              <p>Le client voit mieux le rendu avant de commander, ce qui réduit l’hésitation et facilite la décision.</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <div class="eyebrow">Tarifs flexibles</div>
+        <h2>Un déploiement à la mesure de votre ambition.</h2>
+        <p>Choisissez le niveau d'accompagnement qui correspond à votre ambition commerciale.</p>
+      </div>
+      <div class="pricing-grid" data-reveal>
+        <article class="price-card"><h3>Starter</h3><p>Pour tester l'essayage AR sur une première sélection.</p><div class="price">Sur devis</div><ul class="price-list"><li>Jusqu'à 20 produits</li><li>Expérience web AR</li><li>Onboarding guidé</li></ul><a href="#contact" class="btn-ghost">Demander une démo</a></article>
+        <article class="price-card featured"><h3>Professional</h3><p>Pour accélérer la conversion de votre boutique e-commerce.</p><div class="price">Sur devis</div><ul class="price-list"><li>Catalogue évolutif</li><li>Intégration e-commerce</li><li>Analyse conversion &amp; engagement</li><li>Support prioritaire</li></ul><a href="#contact" class="btn-ghost">Demander une démo</a></article>
+        <article class="price-card"><h3>Enterprise</h3><p>Pour les grands catalogues et expériences sur mesure.</p><div class="price">Sur mesure</div><ul class="price-list"><li>Multi-catalogues et marchés</li><li>Expérience personnalisée</li><li>Accompagnement dédié</li></ul><a href="#contact" class="btn-ghost">Demander une démo</a></article>
+      </div>
+      <p class="pricing-note">Tarification sur mesure pour les grands comptes et les besoins spécifiques.</p>
+      <table class="pricing-compare" data-reveal>
+        <thead><tr><th>Fonctionnalités</th><th>Starter</th><th>Professional</th><th>Enterprise</th></tr></thead>
+        <tbody>
+          <tr><td>Essayage web AR</td><td class="included">✓</td><td class="included">✓</td><td class="included">✓</td></tr>
+          <tr><td>Création d'assets 3D</td><td>Jusqu'à 20</td><td>Catalogue évolutif</td><td>Illimité / sur mesure</td></tr>
+          <tr><td>Intégration e-commerce</td><td class="not-included">—</td><td class="included">✓</td><td class="included">✓</td></tr>
+          <tr><td>Analytics de conversion</td><td class="not-included">—</td><td class="included">✓</td><td class="included">✓</td></tr>
+          <tr><td>Accompagnement dédié</td><td class="not-included">—</td><td>Prioritaire</td><td>Équipe dédiée</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
   <!-- QUIZ -->
   <section id="quiz" class="quiz-section">
     <div class="wrap">
       <div class="section-head" data-reveal>
-        <div class="eyebrow">2 minutes chrono</div>
-        <h2>Quel univers Digiwearit vous correspond ?</h2>
-        <p>Répondez à quatre questions pour découvrir votre style, puis essayez-le en AR.</p>
+        <div class="eyebrow">Diagnostic express</div>
+        <h2>Quel déploiement AR convient à votre entreprise ?</h2>
+        <p>Répondez à quatre questions et recevez une recommandation adaptée à votre catalogue et vos objectifs.</p>
       </div>
 
       <div class="quiz-box" data-reveal>
@@ -785,27 +1027,27 @@
         </div>
 
         <div class="quiz-step active" data-step="0">
-          <div class="quiz-q">Un mariage ce week-end : votre priorité ?</div>
+          <div class="quiz-q">Quel est votre principal objectif commercial ?</div>
           <div class="quiz-options">
-            <button class="quiz-opt" data-val="mode">Trouver le caftan parfait</button>
-            <button class="quiz-opt" data-val="lunettes">Une monture qui affine mon visage</button>
-            <button class="quiz-opt" data-val="beaute">Un teint impeccable toute la soirée</button>
-            <button class="quiz-opt" data-val="mode">Assortir les couleurs à la tenue</button>
+            <button class="quiz-opt" data-val="mode">Tester l'impact de l'AR</button>
+            <button class="quiz-opt" data-val="lunettes">Augmenter la conversion</button>
+            <button class="quiz-opt" data-val="beaute">Déployer à grande échelle</button>
+            <button class="quiz-opt" data-val="mode">Réduire les retours produits</button>
           </div>
         </div>
 
         <div class="quiz-step" data-step="1">
-          <div class="quiz-q">Ce qui vous frustre le plus en achetant en ligne :</div>
+          <div class="quiz-q">Quelle est la taille de votre catalogue ?</div>
           <div class="quiz-options">
-            <button class="quiz-opt" data-val="lunettes">Ne pas savoir si la monture ira à mon visage</button>
-            <button class="quiz-opt" data-val="mode">Ne pas voir le tombé réel du tissu</button>
-            <button class="quiz-opt" data-val="beaute">Ne pas connaître le rendu exact de la teinte</button>
-            <button class="quiz-opt" data-val="mode">Devoir souvent renvoyer le produit</button>
+            <button class="quiz-opt" data-val="mode">Moins de 50 produits</button>
+            <button class="quiz-opt" data-val="lunettes">De 50 à 500 produits</button>
+            <button class="quiz-opt" data-val="beaute">Plus de 500 produits</button>
+            <button class="quiz-opt" data-val="beaute">Plusieurs marques ou marchés</button>
           </div>
         </div>
 
         <div class="quiz-step" data-step="2">
-          <div class="quiz-q">Un mot qui vous décrit le mieux :</div>
+          <div class="quiz-q">Où souhaitez-vous proposer l'essayage ?</div>
           <div class="quiz-options">
             <button class="quiz-opt" data-val="beaute">Expressive</button>
             <button class="quiz-opt" data-val="lunettes">Précise</button>
@@ -815,7 +1057,7 @@
         </div>
 
         <div class="quiz-step" data-step="3">
-          <div class="quiz-q">Votre routine shopping idéale :</div>
+          <div class="quiz-q">Quel niveau d'accompagnement recherchez-vous ?</div>
           <div class="quiz-options">
             <button class="quiz-opt" data-val="beaute">Tester plusieurs teintes en quelques secondes</button>
             <button class="quiz-opt" data-val="mode">Essayer une pièce traditionnelle sans se déplacer</button>
@@ -825,10 +1067,10 @@
         </div>
 
         <div class="quiz-result" id="quizResult">
-          <span class="tag">Votre univers</span>
+          <span class="tag">Votre recommandation</span>
           <h3 id="resultTitle">—</h3>
           <p id="resultDesc">—</p>
-          <a href="#contact" class="btn-primary">Essayer en AR maintenant</a>
+          <a href="#contact" class="btn-primary">Recevoir ma recommandation</a>
         </div>
 
         <div class="quiz-footer" id="quizFooterBar">
@@ -1153,6 +1395,7 @@
       addMessage(getBotResponse(text), 'bot');
     }, 600 + Math.random() * 400);
   });
+
 </script>
 
 </body>
